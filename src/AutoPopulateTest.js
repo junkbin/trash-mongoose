@@ -14,7 +14,7 @@ const CONFIG = {
 class AutoPopulateTest {
     static init(){
         try{
-            mongoose.connect(CONFIG.DB_URL, CONFIG.DB_CONNECT_OPTION);
+            mongoose.connect(CONFIG.DB_URL);
 
             AutoPopulateTest.dbSchemaInit();
         }catch(err){
