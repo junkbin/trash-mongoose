@@ -8,7 +8,7 @@
             "type": "node",
             "request": "launch",
             "name": "AutoPopulate Debug",
-            "program": "${workspaceFolder}/src/AutoPopulateTest.js"
+            "program": "${workspaceFolder}/src/AutoPopulateTest.1.js"
         }
     ]
 }
