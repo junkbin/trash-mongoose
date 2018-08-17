@@ -33,14 +33,16 @@ class AutoPopulateTest {
             let personSchema = new Schema({
                 "name": String,
                 "nickName": String,
-                "areaId": {"type":ObjectId, "ref":CONFIG.AREA_SCHEMA, "autopopulate":true }
+                "areaId": {"type":ObjectId, "ref":CONFIG.AREA_SCHEMA, "autopopulate":true },
+                "areaId2": {"type":ObjectId, "ref":CONFIG.AREA_SCHEMA, "autopopulate":true },
+                "areaId3": {"type":ObjectId, "ref":CONFIG.AREA_SCHEMA },
             });
             personSchema.plugin(autopopulate);
             mongoose.model(CONFIG.PERSON_SCHEMA, personSchema, CONFIG.PERSON_SCHEMA);
 
             let bandSchema = new Schema({
                 "name": String,
-                "personId": {"type":ObjectId, "ref":CONFIG.PERSON_SCHEMA, "autopopulate":{"select" : "name"} },
+                "personId": {"type":ObjectId, "ref":CONFIG.PERSON_SCHEMA, "autopopulate":{"select" : "name", "maxDepth":2} },
                 "areaId": {"type":ObjectId, "ref":CONFIG.AREA_SCHEMA, "autopopulate":true }
             });
             bandSchema.plugin(autopopulate);
@@ -60,7 +62,7 @@ class AutoPopulateTest {
             let peopleRefId = mongoose.Types.ObjectId();
             let areaRefId = mongoose.Types.ObjectId();
 
-            let personJson = {"_id": peopleRefId, "name": "Narendra Modi", "nickName":"Modi", "areaId": areaRefId};
+            let personJson = {"_id": peopleRefId, "name": "Narendra Modi", "nickName":"Modi", "areaId": areaRefId, "areaId2": areaRefId,"areaId3": areaRefId};
             let personPojo = new People(personJson);
             taskList.push(personPojo.save());
 
