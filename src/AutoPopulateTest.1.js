@@ -42,7 +42,7 @@ class AutoPopulateTest {
 
             let bandSchema = new Schema({
                 "name": String,
-                "personId": {"type":ObjectId, "ref":CONFIG.PERSON_SCHEMA, "autopopulate":{"select" : "name", "maxDepth":2} },
+                "personId": {"type":ObjectId, "ref":CONFIG.PERSON_SCHEMA, "autopopulate":{"select" : "name  ", "maxDepth":2} },
                 "areaId": {"type":ObjectId, "ref":CONFIG.AREA_SCHEMA, "autopopulate":true }
             });
             bandSchema.plugin(autopopulate);

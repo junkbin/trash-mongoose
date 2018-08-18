@@ -29,12 +29,13 @@ class AutoPopulateTest {
                 "code": String,
                 "name": String
             });
+            subAreaSchema.plugin(autopopulate);
             mongoose.model(CONFIG.SUBAREA_SCHEMA, subAreaSchema, CONFIG.SUBAREA_SCHEMA);
 
             let areaSchema = new Schema({
                 "code": String,
                 "name": String,
-                "subareaId" : {"type":ObjectId, "ref":CONFIG.SUBAREA_SCHEMA, "autopopulate":{maxDepth:1} },
+                "subareaId" : {"type":ObjectId, "ref":CONFIG.SUBAREA_SCHEMA, "autopopulate":{"select":"name code", "maxDepth":1} },
             });
             areaSchema.plugin(autopopulate);
             mongoose.model(CONFIG.AREA_SCHEMA, areaSchema, CONFIG.AREA_SCHEMA);
@@ -42,9 +43,9 @@ class AutoPopulateTest {
             let personSchema = new Schema({
                 "name": String,
                 "nickName": String,
-                "areaId": {"type":ObjectId, "ref":CONFIG.AREA_SCHEMA, "autopopulate":{"select":"x", "maxDepth":1} },
-                "areaId2": {"type":ObjectId, "ref":CONFIG.AREA_SCHEMA, "autopopulate":true },
-                "areaId3": {"type":ObjectId, "ref":CONFIG.AREA_SCHEMA },
+                "areaId": {"type":ObjectId, "ref":CONFIG.AREA_SCHEMA, "autopopulate":{"select":"code ", "maxDepth":3} },
+                "areaId2": {"type":ObjectId, "ref":CONFIG.AREA_SCHEMA, "autopopulate":{"select":"name code", "maxDepth":2} },
+                //"areaId3": {"type":ObjectId, "ref":CONFIG.AREA_SCHEMA },
             });
             personSchema.plugin(autopopulate);
             mongoose.model(CONFIG.PERSON_SCHEMA, personSchema, CONFIG.PERSON_SCHEMA);
@@ -52,7 +53,7 @@ class AutoPopulateTest {
             let bandSchema = new Schema({
                 "name": String,
                 "personId": {"type":ObjectId, "ref":CONFIG.PERSON_SCHEMA, "autopopulate":{"select" : "name", "maxDepth":2} },
-                "areaId": {"type":ObjectId, "ref":CONFIG.AREA_SCHEMA, "autopopulate":{"select":"name", "maxDepth" : 1} }
+                "areaId": {"type":ObjectId, "ref":CONFIG.AREA_SCHEMA, "autopopulate":{"select":"name", "maxDepth" : 2} }
             });
             bandSchema.plugin(autopopulate);
             mongoose.model(CONFIG.BAND_SCHEMA, bandSchema, CONFIG.BAND_SCHEMA);
