@@ -43,7 +43,7 @@ class AutoPopulateTest {
             let personSchema = new Schema({
                 "name": String,
                 "nickName": String,
-                "areaId": {"type":ObjectId, "ref":CONFIG.AREA_SCHEMA, "autopopulate":{"select":"code ", "maxDepth":3} },
+                "areaId": {"type":ObjectId, "ref":CONFIG.AREA_SCHEMA, "autopopulate":{"select":"code ", "maxDepth":2} },
                 "areaId2": {"type":ObjectId, "ref":CONFIG.AREA_SCHEMA, "autopopulate":{"select":"name code", "maxDepth":2} },
                 //"areaId3": {"type":ObjectId, "ref":CONFIG.AREA_SCHEMA },
             });
