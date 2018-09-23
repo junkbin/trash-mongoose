@@ -7,7 +7,6 @@ const CONFIG = {
     "DB_URL" : "mongodb://localhost/test1",
     "DB_CONNECT_OPTION" : {"useMongoClient" : true},
     "PERSON_SCHEMA" : "PERSON",
-    "SUBAREA_SCHEMA" : "SUBAREA",
     "AREA_SCHEMA" : "AREA",
     "BAND_SCHEMA" : "BAND",
 };
@@ -25,35 +24,24 @@ class AutoPopulateTest {
 
     static dbSchemaInit(){
         try{
-            let subAreaSchema = new Schema({
-                "code": String,
-                "name": String
-            });
-            subAreaSchema.plugin(autopopulate);
-            mongoose.model(CONFIG.SUBAREA_SCHEMA, subAreaSchema, CONFIG.SUBAREA_SCHEMA);
-
             let areaSchema = new Schema({
                 "code": String,
-                "name": String,
-                "subareaId" : {"type":ObjectId, "ref":CONFIG.SUBAREA_SCHEMA, "autopopulate":{"select":"name code", "maxDepth":1} },
-            });
-            areaSchema.plugin(autopopulate);
+                "name": String
+            }, {selectPopulatedPaths: false});
             mongoose.model(CONFIG.AREA_SCHEMA, areaSchema, CONFIG.AREA_SCHEMA);
 
             let personSchema = new Schema({
                 "name": String,
                 "nickName": String,
-                "areaId": {"type":ObjectId, "ref":CONFIG.AREA_SCHEMA, "autopopulate":{"select":"code ", "maxDepth":3} },
-                "areaId2": {"type":ObjectId, "ref":CONFIG.AREA_SCHEMA, "autopopulate":{"select":"name code", "maxDepth":2} },
-                //"areaId3": {"type":ObjectId, "ref":CONFIG.AREA_SCHEMA },
-            });
+                "areaId": {"type":ObjectId, "ref":CONFIG.AREA_SCHEMA, "autopopulate":true }
+            }, {selectPopulatedPaths: false});
             personSchema.plugin(autopopulate);
             mongoose.model(CONFIG.PERSON_SCHEMA, personSchema, CONFIG.PERSON_SCHEMA);
 
             let bandSchema = new Schema({
                 "name": String,
-                "personId": {"type":ObjectId, "ref":CONFIG.PERSON_SCHEMA, "autopopulate":{"select" : "name ", "maxDepth":2} },
-                "areaId": {"type":ObjectId, "ref":CONFIG.AREA_SCHEMA, "autopopulate":{"select":"name", "maxDepth" : 2} }
+                "personId": {"type":ObjectId, "ref":CONFIG.PERSON_SCHEMA, "autopopulate":{select:'name'}},
+                "areaId": {"type":ObjectId, "ref":CONFIG.AREA_SCHEMA, "autopopulate":true }
             });
             bandSchema.plugin(autopopulate);
             mongoose.model(CONFIG.BAND_SCHEMA, bandSchema, CONFIG.BAND_SCHEMA);
@@ -66,23 +54,17 @@ class AutoPopulateTest {
         try {
             let People = mongoose.model(CONFIG.PERSON_SCHEMA);
             let Area = mongoose.model(CONFIG.AREA_SCHEMA);
-            let SubArea = mongoose.model(CONFIG.SUBAREA_SCHEMA);
             let Band = mongoose.model(CONFIG.BAND_SCHEMA);
 
             let taskList = [];
             let peopleRefId = mongoose.Types.ObjectId();
             let areaRefId = mongoose.Types.ObjectId();
-            let subareaRefId = mongoose.Types.ObjectId();
 
-            let personJson = {"_id": peopleRefId, "name": "Narendra Modi", "nickName":"Modi", "areaId": areaRefId, "areaId2": areaRefId,"areaId3": areaRefId};
+            let personJson = {"_id": peopleRefId, "name": "Narendra Modi", "nickName":"Modi", "areaId": areaRefId};
             let personPojo = new People(personJson);
             taskList.push(personPojo.save());
 
-            let subareaJson = {"_id" : subareaRefId, "code" : "SUB-IND", "name" : "SUB-INDIA"};
-            let subareaPojo = new SubArea(subareaJson);
-            taskList.push(subareaPojo.save());
-
-            let areaJson = {"_id" : areaRefId, "code" : "IND", "name" : "INDIA", "subareaId":subareaRefId};
+            let areaJson = {"_id" : areaRefId, "code" : "IND", "name" : "INDIA"};
             let areaPojo = new Area(areaJson);
             taskList.push(areaPojo.save());
 
@@ -115,7 +97,7 @@ class AutoPopulateTest {
             await AutoPopulateTest.saveRecords();
 
             let queryOutput = await AutoPopulateTest.fetchRecord();
-            console.log(JSON.parse(JSON.stringify(queryOutput)));
+            console.log(queryOutput);
         }catch(err){
             console.log(err);
         }
