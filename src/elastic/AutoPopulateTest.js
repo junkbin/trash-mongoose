@@ -43,7 +43,9 @@ class AutoPopulateTest {
             });
             personSchema.plugin(autopopulate);
             personSchema.plugin(mongoosastic, CONFIG.ES_CONF);
-            mongoose.model(CONFIG.PERSON_SCHEMA, personSchema, CONFIG.PERSON_SCHEMA);
+            let PersonModel = mongoose.model(CONFIG.PERSON_SCHEMA, personSchema, CONFIG.PERSON_SCHEMA);
+            PersonModel.createMapping((err, mapping)=> console.log(err, mapping) );
+            
 
             let bandSchema = new Schema({
                 "name": {type:String, es_indexed:true},
@@ -52,7 +54,8 @@ class AutoPopulateTest {
             });
             bandSchema.plugin(autopopulate);
             bandSchema.plugin(mongoosastic, CONFIG.ES_CONF);
-            mongoose.model(CONFIG.BAND_SCHEMA, bandSchema, CONFIG.BAND_SCHEMA);
+            let BandModel = mongoose.model(CONFIG.BAND_SCHEMA, bandSchema, CONFIG.BAND_SCHEMA);
+            BandModel.createMapping((err, mapping)=> console.log(err, mapping) );
         }catch(err){
             throw err;
         }
@@ -103,14 +106,16 @@ class AutoPopulateTest {
             let Band = mongoose.model(CONFIG.BAND_SCHEMA);
 
             Band.search(
-                    {'query_string': {'query': "john"}},
-                    {'hyderate' : true},
+                {query_string: {query: 'john'}},
+                {
+                    'hyderate' : true,
+                },
 
-                    (err, results)=>{
-                        console.log(err);
-                        console.log(results);
-                    }
-                );
+                (err, results)=>{
+                    console.log(err);
+                    console.log(results);
+                }
+            );
 
             return "output";
         }catch(err){
