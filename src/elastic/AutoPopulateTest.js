@@ -115,7 +115,7 @@ class AutoPopulateTest {
                 },
                 (err, results)=>{
                     console.log(err);
-                    console.log(results);
+                    console.log(results.hits.hits[0]);
                 }
             );
 
@@ -132,7 +132,7 @@ class AutoPopulateTest {
             await AutoPopulateTest.saveRecords();
 
             let queryOutput = await AutoPopulateTest.fetchRecord();
-            // console.log(queryOutput);
+            console.log(queryOutput);
 
             let eoutput = await AutoPopulateTest.fetchFromElastic();
             console.log(eoutput);
