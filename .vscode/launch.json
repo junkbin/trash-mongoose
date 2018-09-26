@@ -8,7 +8,7 @@
             "type": "node",
             "request": "launch",
             "name": "AutoPopulate Debug",
-            "program": "${workspaceFolder}/src/elastic/AutoPopulateTest.js"
+            "program": "${workspaceFolder}/src/elastic/Search2.js"
         }
     ]
 }
