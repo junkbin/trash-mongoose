@@ -44,7 +44,7 @@ class AutoPopulateTest {
             personSchema.plugin(autopopulate);
             personSchema.plugin(mongoosastic, CONFIG.ES_CONF);
             let PersonModel = mongoose.model(CONFIG.PERSON_SCHEMA, personSchema, CONFIG.PERSON_SCHEMA);
-            PersonModel.createMapping((err, mapping)=> console.log(err, mapping) );
+            // PersonModel.createMapping((err, mapping)=> console.log(err, mapping) );
             
 
             let bandSchema = new Schema({
@@ -55,7 +55,7 @@ class AutoPopulateTest {
             bandSchema.plugin(autopopulate);
             bandSchema.plugin(mongoosastic, CONFIG.ES_CONF);
             let BandModel = mongoose.model(CONFIG.BAND_SCHEMA, bandSchema, CONFIG.BAND_SCHEMA);
-            BandModel.createMapping((err, mapping)=> console.log(err, mapping) );
+            // BandModel.createMapping((err, mapping)=> console.log(err, mapping) );
         }catch(err){
             throw err;
         }
@@ -106,11 +106,13 @@ class AutoPopulateTest {
             let Band = mongoose.model(CONFIG.BAND_SCHEMA);
 
             Band.search(
-                {query_string: {query: 'john'}},
                 {
-                    'hyderate' : true,
+                    'query_string': {query: 'Politics'},
                 },
-
+                {
+                    hydrate: true,
+                    hydrateOptions: {lean: true}
+                },
                 (err, results)=>{
                     console.log(err);
                     console.log(results);
@@ -130,7 +132,7 @@ class AutoPopulateTest {
             await AutoPopulateTest.saveRecords();
 
             let queryOutput = await AutoPopulateTest.fetchRecord();
-            console.log(queryOutput);
+            // console.log(queryOutput);
 
             let eoutput = await AutoPopulateTest.fetchFromElastic();
             console.log(eoutput);
