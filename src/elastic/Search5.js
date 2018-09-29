@@ -1,13 +1,24 @@
 let mongoose     = require('mongoose')
   , mongoosastic = require('mongoosastic')
   , Schema       = mongoose.Schema
+  elasticsearch = require('elasticsearch');
+var Bluebird = require('bluebird');
+
+var esClient = new elasticsearch.Client({
+    host: 'localhost:9200',
+    sniffOnStart: true,
+    sniffInterval: 60000,
+    defer: function () {
+        return Bluebird.defer();
+    }
+});
 
 var User = new Schema({
     name: {type:String, es_indexed:true}
   , email: String
   , city: String
 });
-User.plugin(mongoosastic)
+User.plugin(mongoosastic,   {esClient: esClient});
 mongoose.model("USER", User, "USER");
 
 
@@ -19,24 +30,17 @@ async function appSave(){
     return await ref1.save();
 }
 
-function fetchData(){
+async function  fetchData(){
     let UserModel = mongoose.model("USER");
 
-    UserModel.search(
-            {
+    let results = await UserModel.search({
                 'query_string': {query: 'affi'},
-            },
-            {
+            },{
                 hydrate: true,
                 hydrateOptions: {lean: true}
-            },
-            (err, results) => {
-                console.log(err);
-                if(results){
-                    console.log(JSON.stringify(results));
-                }
-            }
-        );
+            });
+    console.log(results);
+    
 }
 
 

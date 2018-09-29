@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bluebird": "^3.5.2",
+    "elasticsearch": "^15.1.1",
     "mongoosastic": "^4.4.1",
     "mongoose": "^5.2.9",
     "mongoose-autopopulate": "^0.8.0"
