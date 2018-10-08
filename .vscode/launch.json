@@ -9,6 +9,21 @@
             "request": "launch",
             "name": "Search Debug",
             "program": "${workspaceFolder}/src/elastic/Search8.js"
+        },
+
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Add New Collection",
+            "program": "${workspaceFolder}/src/elastic/AddNewCollection.js"
+        },
+
+
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Index Existing Collection",
+            "program": "${workspaceFolder}/src/elastic/IndexExistingCollection.js"
         }
     ]
 }

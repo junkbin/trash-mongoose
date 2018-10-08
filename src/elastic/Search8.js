@@ -48,7 +48,7 @@ async function  fetchData1(){
 
 async function unindex() {
     let UserModel = mongoose.model("USER");
-    let id = "5bb75ce6608ed2602cb145df";
+    let id = "5bb75d03b0262560354c9232";
 
     let doc = await UserModel.findById(id).exec();
     doc.unIndex((err)=>console.log("Removed from index.", err));
