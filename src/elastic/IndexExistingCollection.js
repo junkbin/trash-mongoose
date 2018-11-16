@@ -19,7 +19,7 @@ const EmployeeModel = mongoose.model("Employee", EmployeeSchema, "employee");
 EmployeeModel.search = Promise.promisify(EmployeeModel.search, {context: EmployeeModel});
 
 
-async function indexExistingCollection() {
+function indexExistingCollection() {
     try{
         const EmployeeModel = mongoose.model("Employee");
         
@@ -38,7 +38,7 @@ async function indexExistingCollection() {
 
         return "DONE";
     }catch(err){
-        return Promise.reject(err);
+        throw err;
     }
 }
 
