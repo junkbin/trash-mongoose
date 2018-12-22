@@ -102,7 +102,7 @@ class AutoPopulateTest {
                 return Employee.update({"_id": employeeDoc.id}, {"name": "Kaushik Ahuja"});
             }).then(function (doc) {
 
-                return Employee.findById(doc.id);
+                return Employee.findById(id);
             }).then(function (record) {
 
                 resolve(record);
@@ -123,9 +123,9 @@ class AutoPopulateTest {
 
                 // await AutoPopulateTest.saveRecords();
 
-                // let mpromise = AutoPopulateTest.updateRecord();
+                let mpromise = AutoPopulateTest.updateRecord();
 
-                let mpromise = AutoPopulateTest.fetchRecord();
+                // let mpromise = AutoPopulateTest.fetchRecord();
                 mpromise.then(function (record) {
 
                     console.log("simple promise \n", record);
