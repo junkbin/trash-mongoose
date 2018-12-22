@@ -71,49 +71,31 @@ class AutoPopulateTest {
         }
     }
 
-    static fetchRecord() {
-        return new Promise(function (resolve, reject) {
-
-            let id = "5c1ce93e165eb7f82f0b697a";
+    static async fetchRecordByAsync() {
+        try {
             let Employee = mongoose.model(CONFIG.EMPLOYEE_SCHEMA);
-            let mpromise = Employee.findById(id).exec();
-            mpromise.then(function (employeeDoc) {
 
-                if (employeeDoc) {
-                    resolve(employeeDoc);
-                } else {
-                    console.log("Invalid Id");
-                }
-            }).catch(function (err) {
-                console.log(err);
-                reject(err);
-            })
-        });
+            let output = await Employee.findOne().sort({"_id": -1}).exec();
+            return output.toObject();
+        } catch (err) {
+            return Promise.reject(err);
+        }
     }
 
+    static async mainByAsync() {
 
-    static main() {
-        return new Promise(function (resolve, reject) {
+        try {
+            AutoPopulateTest.init();
 
-            try {
-                AutoPopulateTest.init();
-
-                // await AutoPopulateTest.saveRecords();
-
-                let mpromise = AutoPopulateTest.fetchRecord();
-                mpromise.then(function (record) {
-
-                    console.log("simple promise \n", record);
-                    resolve(record)
-                }).catch(function (err) {
-                    reject(err);
-                });
-
-            } catch (err) {
-                console.log(err);
-            }
-        });
+            await AutoPopulateTest.saveRecords();
+            let queryOutputByAsync = await AutoPopulateTest.fetchRecordByAsync();
+            console.log("async promise \n", queryOutputByAsync);
+        } catch (err) {
+            console.log(err);
+        }
     }
+
 }
 
-AutoPopulateTest.main();
+AutoPopulateTest.mainByAsync();
+
