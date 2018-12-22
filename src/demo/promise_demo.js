@@ -50,15 +50,15 @@ class AutoPopulateTest {
             let departmentRefId = mongoose.Types.ObjectId();
             let employeeRefId = mongoose.Types.ObjectId();
 
-            let departmentJson = {"_id": departmentRefId, "name": "Admin", "description": "Admin Department"};
+            let departmentJson = {"_id": departmentRefId, "name": "Technical", "description": "Technical Department"};
             let departmentPojo = new Department(departmentJson);
             taskList.push(departmentPojo.save());
 
             let employeeJson = {
                 "_id": employeeRefId,
-                "name": "Ashish Sarode",
-                "age": "31",
-                "phone": "8585201258",
+                "name": "Jayanti Kathale",
+                "age": "29",
+                "phone": "5285647895",
                 "departmentId": departmentRefId
             };
             let employeePojo = new Employee(employeeJson);
@@ -74,7 +74,7 @@ class AutoPopulateTest {
     static fetchRecord() {
         return new Promise(function (resolve, reject) {
 
-            let id = "5c1ce93e165eb7f82f0b697a";
+            let id = "5c1ce93e165eb7f82f0b6e7a";
             let Employee = mongoose.model(CONFIG.EMPLOYEE_SCHEMA);
             let mpromise = Employee.findById(id).exec();
             mpromise.then(function (employeeDoc) {
@@ -91,6 +91,29 @@ class AutoPopulateTest {
         });
     }
 
+    static updateRecord() {
+        return new Promise(function (resolve, reject) {
+
+            let id = "5c1ce93e165eb7f82f0b6e76";        // wrong id :   5c1ce93e165eb7f82f0b6e7a
+            let Employee = mongoose.model(CONFIG.EMPLOYEE_SCHEMA);
+            let mpromise = Employee.findById(id).exec();
+            mpromise.then(function (employeeDoc) {
+
+                return Employee.update({"_id": employeeDoc.id}, {"name": "Kaushik Ahuja"});
+            }).then(function (doc) {
+
+                return Employee.findById(doc.id);
+            }).then(function (record) {
+
+                resolve(record);
+            }).catch(function (err) {
+
+                console.log(err);
+                reject(err);
+            })
+        });
+    }
+
 
     static main() {
         return new Promise(function (resolve, reject) {
@@ -100,15 +123,17 @@ class AutoPopulateTest {
 
                 // await AutoPopulateTest.saveRecords();
 
+                // let mpromise = AutoPopulateTest.updateRecord();
+
                 let mpromise = AutoPopulateTest.fetchRecord();
                 mpromise.then(function (record) {
 
                     console.log("simple promise \n", record);
                     resolve(record)
                 }).catch(function (err) {
+
                     reject(err);
                 });
-
             } catch (err) {
                 console.log(err);
             }

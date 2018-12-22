@@ -1,7 +1,7 @@
 {
   "name": "trash-mongoose",
   "version": "1.0.0",
-  "description": "",
+  "description": "* Index multi field.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,9 +10,20 @@
   "license": "ISC",
   "dependencies": {
     "bluebird": "^3.5.2",
+    "cookie-parser": "^1.4.3",
     "elasticsearch": "^15.1.1",
+    "express": "^4.13.4",
     "mongoosastic": "^4.4.1",
     "mongoose": "4.4.5",
     "mongoose-autopopulate": "^0.8.0"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/junkbin/trash-mongoose.git"
+  },
+  "bugs": {
+    "url": "https://github.com/junkbin/trash-mongoose/issues"
+  },
+  "homepage": "https://github.com/junkbin/trash-mongoose#readme"
 }
