@@ -9,12 +9,12 @@ const CONFIG = {
     "DEPARTMENT_SCHEMA": "DEPARTMENT"
 };
 
-class AutoPopulateTest {
+class PromiseDemo {
     static init() {
         try {
             mongoose.connect(CONFIG.DB_URL);
 
-            AutoPopulateTest.dbSchemaInit();
+            PromiseDemo.dbSchemaInit();
         } catch (err) {
             throw err;
         }
@@ -85,10 +85,10 @@ class AutoPopulateTest {
     static async mainByAsync() {
 
         try {
-            AutoPopulateTest.init();
+            PromiseDemo.init();
 
-            await AutoPopulateTest.saveRecords();
-            let queryOutputByAsync = await AutoPopulateTest.fetchRecordByAsync();
+            await PromiseDemo.saveRecords();
+            let queryOutputByAsync = await PromiseDemo.fetchRecordByAsync();
             console.log("async promise \n", queryOutputByAsync);
         } catch (err) {
             console.log(err);
@@ -97,5 +97,5 @@ class AutoPopulateTest {
 
 }
 
-AutoPopulateTest.mainByAsync();
+PromiseDemo.mainByAsync();
 

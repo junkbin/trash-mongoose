@@ -9,12 +9,12 @@ const CONFIG = {
     "DEPARTMENT_SCHEMA": "DEPARTMENT"
 };
 
-class AutoPopulateTest {
+class PromiseDemo1 {
     static init() {
         try {
             mongoose.connect(CONFIG.DB_URL);
 
-            AutoPopulateTest.dbSchemaInit();
+            PromiseDemo1.dbSchemaInit();
         } catch (err) {
             throw err;
         }
@@ -119,13 +119,13 @@ class AutoPopulateTest {
         return new Promise(function (resolve, reject) {
 
             try {
-                AutoPopulateTest.init();
+                PromiseDemo1.init();
 
-                // await AutoPopulateTest.saveRecords();
+                // await PromiseDemo1.saveRecords();
 
-                let mpromise = AutoPopulateTest.updateRecord();
+                let mpromise = PromiseDemo1.updateRecord();
 
-                // let mpromise = AutoPopulateTest.fetchRecord();
+                // let mpromise = PromiseDemo1.fetchRecord();
                 mpromise.then(function (record) {
 
                     console.log("simple promise \n", record);
@@ -141,4 +141,4 @@ class AutoPopulateTest {
     }
 }
 
-AutoPopulateTest.main();
+PromiseDemo1.main();
